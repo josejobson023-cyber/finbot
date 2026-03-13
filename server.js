@@ -5,12 +5,10 @@ const app = express();
 app.use(express.json());
 
 // ─── CONFIGURAÇÕES ───────────────────────────────────────────────
-const ZAPI_INSTANCE_ID  = process.env.ZAPI_INSTANCE_ID;
-const ZAPI_TOKEN        = process.env.ZAPI_TOKEN;
-const ZAPI_CLIENT_TOKEN = process.env.ZAPI_CLIENT_TOKEN;
-const GROQ_KEY          = process.env.GROQ_KEY;
-
-const ZAPI_BASE = `https://api.z-api.io/instances/${ZAPI_INSTANCE_ID}/token/${ZAPI_TOKEN}`;
+const ZAPI_INSTANCE_ID = "SEU_ID";
+const ZAPI_TOKEN = "SEU_TOKEN";
+const ZAPI_CLIENT_TOKEN = "SEU_CLIENT_TOKEN";
+const GROQ_KEY = "SUA_GROQ_KEY";
 
 // ─── MEMÓRIA DE GASTOS ────────────────────────────────────────────
 const userExpenses = {};
@@ -56,9 +54,13 @@ Exemplo: {"amount": 45.50, "category": "🍔 Alimentação", "desc": "Almoço no
     }
   );
 
-  const raw = response.data.choices[0].message.content || "{}";
-  return JSON.parse(raw.replace(/```json|```/g, "").trim());
+  let data = {};
+try {
+  data = JSON.parse(raw.replace(/```json|```/g, "").trim());
+} catch {
+  data = {};
 }
+return data;
 
 const formatBRL = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
